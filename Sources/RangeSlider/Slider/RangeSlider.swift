@@ -10,18 +10,20 @@ public class RangeSlider: UIControl {
             updateUpperThumbFrame()
         }
     }
+    
+    public var options: RangeSliderOptions {
+        didSet {
+            updateTrackFrame()
+            updateLowerThumbFrame()
+            updateUpperThumbFrame()
+        }
+    }
 
     private let track: Track
     private let lowerThumb: UIView
     private let upperThumb: UIView
 
     private var selectedThumb: UIView?
-
-    public let onSelectLower: () -> Void
-    public let onSelectUpper: () -> Void
-    public let onEditingChanged: (Bool) -> Void
-
-    private let options: RangeSliderOptions
     private var dragOffset: CGFloat?
 
     override public var frame: CGRect {
@@ -43,10 +45,7 @@ public class RangeSlider: UIControl {
         lowerThumb: UIView = .defaultLowerThumb,
         upperThumb: UIView = .defaultUpperThumb,
         configuration: RangeSliderConfiguration = .default,
-        options: RangeSliderOptions = .default,
-        onSelectLower: @escaping () -> Void = {},
-        onSelectUpper: @escaping () -> Void = {},
-        onEditingChanged: @escaping (Bool) -> Void = { _ in }
+        options: RangeSliderOptions = .default
     ) {
         track = .init(range: configuration.range,
                       trackBounds: configuration.bounds,
@@ -55,9 +54,6 @@ public class RangeSlider: UIControl {
         self.upperThumb = upperThumb
         self.configuration = configuration
         self.options = options
-        self.onSelectLower = onSelectLower
-        self.onSelectUpper = onSelectUpper
-        self.onEditingChanged = onEditingChanged
         super.init(frame: .zero)
         setup()
     }

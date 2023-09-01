@@ -1,6 +1,13 @@
 import Foundation
 import UIKit
-
+//    public init(range: ClosedRange<CGFloat> = 2 ... 8,
+//                trackConfiguration: TrackConfiguration) {
+//        self.trackConfiguration = .init(lowerLeadingOffset: lowerThumbSize.width / 2,
+//                                        lowerTrailingOffset: lowerThumbSize.width / 2 + upperThumbSize.width,
+//                                        upperLeadingOffset: lowerThumbSize.width + upperThumbSize.width / 2,
+//                                        upperTrailingOffset: upperThumbSize.width / 2)
+//        self.range = range
+//    }
 // MARK: - Track
 
 class Track: UIView {
@@ -38,14 +45,12 @@ class Track: UIView {
     override init(frame: CGRect) {
         self.range = 1 ... 9
         self.trackBounds = 0 ... 10
-        self.configuration = .init(lowerLeadingOffset: 0,
-                                   lowerTrailingOffset: 0,
-                                   upperLeadingOffset: 0,
-                                   upperTrailingOffset: 0,
-                                   trackHeight: 0,
+        self.configuration = .init(trackHeight: 0,
                                    cornerRadius: 0,
                                    backgroundColor: .black,
-                                   foregroundColor: .black)
+                                   foregroundColor: .black,
+                                   lowerThumbSize: .zero,
+                                   upperThumbSize: .zero)
         super.init(frame: frame)
         setup()
     }
@@ -53,14 +58,12 @@ class Track: UIView {
     required init?(coder: NSCoder) {
         self.range = 1 ... 9
         self.trackBounds = 0 ... 10
-        self.configuration = .init(lowerLeadingOffset: 0,
-                                   lowerTrailingOffset: 0,
-                                   upperLeadingOffset: 0,
-                                   upperTrailingOffset: 0,
-                                   trackHeight: 0,
+        self.configuration = .init(trackHeight: 0,
                                    cornerRadius: 0,
                                    backgroundColor: .black,
-                                   foregroundColor: .black)
+                                   foregroundColor: .black,
+                                   lowerThumbSize: .zero,
+                                   upperThumbSize: .zero)
         super.init(coder: coder)
         setup()
     }
@@ -97,17 +100,17 @@ class Track: UIView {
             value: range.lowerBound,
             availableDistance: frame.size.width,
             bounds: trackBounds,
-            leadingOffset: configuration.lowerLeadingOffset,
-            trailingOffset: configuration.lowerTrailingOffset
+            leadingOffset: offsets.lowerLeadingOffset,
+            trailingOffset: offsets.lowerTrailingOffset
         )
         let width = rangeDistance(
             overallLength: frame.size.width,
             range: range,
             bounds: trackBounds,
-            lowerStartOffset: configuration.lowerLeadingOffset,
-            lowerEndOffset: configuration.lowerTrailingOffset,
-            upperStartOffset: configuration.upperLeadingOffset,
-            upperEndOffset: configuration.upperTrailingOffset
+            lowerStartOffset: offsets.lowerLeadingOffset,
+            lowerEndOffset: offsets.lowerTrailingOffset,
+            upperStartOffset: offsets.upperLeadingOffset,
+            upperEndOffset: offsets.upperTrailingOffset
         )
         rangeView.frame = .init(x: leadingOffset,
                                 y: center.y - configuration.trackHeight / 2,
@@ -127,8 +130,8 @@ class Track: UIView {
             overallLength: frame.size.width,
             range: trackBounds,
             bounds: trackBounds,
-            lowerStartOffset: configuration.lowerLeadingOffset,
-            lowerEndOffset: configuration.lowerTrailingOffset,
+            lowerStartOffset: 0,
+            lowerEndOffset: 0,
             upperStartOffset: 0,
             upperEndOffset: 0
         )
@@ -136,5 +139,17 @@ class Track: UIView {
                                 y: center.y - configuration.trackHeight / 2,
                                 width: width,
                                 height: configuration.trackHeight)
+    }
+    
+    private var offsets: TrackOffsets.OffsetValues {
+        switch configuration.offsets {
+        case .default:
+            return .init(lowerLeadingOffset: configuration.lowerThumbSize.width / 2,
+                         lowerTrailingOffset: configuration.lowerThumbSize.width / 2 + configuration.upperThumbSize.width,
+                         upperLeadingOffset: configuration.lowerThumbSize.width + configuration.upperThumbSize.width / 2,
+                         upperTrailingOffset: configuration.upperThumbSize.width / 2)
+        case let .custom(values):
+            return values
+        }
     }
 }
