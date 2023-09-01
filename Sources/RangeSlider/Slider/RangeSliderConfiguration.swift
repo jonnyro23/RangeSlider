@@ -38,9 +38,9 @@ public struct RangeSliderConfiguration {
 
     private var _range: ClosedRange<CGFloat>
 
-    public let bounds: ClosedRange<CGFloat>
-    public let step: CGFloat
-    public let distance: ClosedRange<CGFloat>
+    public var bounds: ClosedRange<CGFloat>
+    public var step: CGFloat
+    public var distance: ClosedRange<CGFloat>
 
     public let lowerThumbSize: CGSize
     public let upperThumbSize: CGSize
