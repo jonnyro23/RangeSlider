@@ -3,7 +3,7 @@ import Foundation
 // MARK: - RangeSliderConfiguration
 
 public struct RangeSliderConfiguration {
-    internal init(range: ClosedRange<CGFloat>,
+    public init(range: ClosedRange<CGFloat>,
                   bounds: ClosedRange<CGFloat>,
                   step: CGFloat,
                   distance: ClosedRange<CGFloat>,
