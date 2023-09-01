@@ -4,30 +4,31 @@ import UIKit
 // MARK: - Track
 
 class Track: UIView {
-    
-    var range: ClosedRange<CGFloat> = 0.3 ... 0.6 {
-        didSet {
-            updateTrackViewFrame()
-            updateRangeViewFrame()
-        }
-    }
-    
-    var trackBounds: ClosedRange<CGFloat> = 0.0 ... 1.0 {
+    var range: ClosedRange<CGFloat> {
         didSet {
             updateTrackViewFrame()
             updateRangeViewFrame()
         }
     }
 
-    var configuration: TrackConfiguration = .init()
+    var trackBounds: ClosedRange<CGFloat> {
+        didSet {
+            updateTrackViewFrame()
+            updateRangeViewFrame()
+        }
+    }
+
+    var configuration: TrackConfiguration
 
     let trackView: UIView = .init()
     let rangeView: UIView = .init()
 
     init(range: ClosedRange<CGFloat>,
-                trackBounds: ClosedRange<CGFloat>,
-                configuration: TrackConfiguration) {
+         trackBounds: ClosedRange<CGFloat>,
+         configuration: TrackConfiguration)
+    {
         self.range = range
+        self.trackBounds = trackBounds
         self.configuration = configuration
         super.init(frame: .zero)
         isUserInteractionEnabled = false
@@ -35,15 +36,35 @@ class Track: UIView {
     }
 
     override init(frame: CGRect) {
+        self.range = 1 ... 9
+        self.trackBounds = 0 ... 10
+        self.configuration = .init(lowerLeadingOffset: 0,
+                                   lowerTrailingOffset: 0,
+                                   upperLeadingOffset: 0,
+                                   upperTrailingOffset: 0,
+                                   trackHeight: 0,
+                                   cornerRadius: 0,
+                                   backgroundColor: .black,
+                                   foregroundColor: .black)
         super.init(frame: frame)
         setup()
     }
 
     required init?(coder: NSCoder) {
+        self.range = 1 ... 9
+        self.trackBounds = 0 ... 10
+        self.configuration = .init(lowerLeadingOffset: 0,
+                                   lowerTrailingOffset: 0,
+                                   upperLeadingOffset: 0,
+                                   upperTrailingOffset: 0,
+                                   trackHeight: 0,
+                                   cornerRadius: 0,
+                                   backgroundColor: .black,
+                                   foregroundColor: .black)
         super.init(coder: coder)
         setup()
     }
-    
+
     override var frame: CGRect {
         didSet {
             updateTrackViewFrame()

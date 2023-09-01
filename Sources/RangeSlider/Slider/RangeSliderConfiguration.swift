@@ -3,31 +3,51 @@ import Foundation
 // MARK: - RangeSliderConfiguration
 
 public struct RangeSliderConfiguration {
-    public init(range: ClosedRange<CGFloat> = 2 ... 8) {
-        self.trackConfiguration = .init(lowerLeadingOffset: lowerThumbSize.width / 2,
-                                        lowerTrailingOffset: lowerThumbSize.width / 2 + upperThumbSize.width,
-                                        upperLeadingOffset: lowerThumbSize.width + upperThumbSize.width / 2,
-                                        upperTrailingOffset: upperThumbSize.width / 2)
-        self.range = range
+    internal init(range: ClosedRange<CGFloat>,
+                  bounds: ClosedRange<CGFloat>,
+                  step: CGFloat,
+                  distance: ClosedRange<CGFloat>,
+                  lowerThumbSize: CGSize,
+                  upperThumbSize: CGSize,
+                  trackConfiguration: TrackConfiguration) {
+        self._range = range
+        self.bounds = bounds
+        self.step = step
+        self.distance = distance
+        self.lowerThumbSize = lowerThumbSize
+        self.upperThumbSize = upperThumbSize
+        self.trackConfiguration = trackConfiguration
     }
-    
-    private var _range: ClosedRange<CGFloat> = 2 ... 8
+
     public var range: ClosedRange<CGFloat> {
         get { CGFloat(_range.clamped(to: bounds).lowerBound) ... CGFloat(_range.clamped(to: bounds).upperBound) }
-        set { _range = CGFloat(newValue.lowerBound) ... CGFloat(newValue.upperBound) }
+        set { _range = newValue }
     }
-    public let bounds: ClosedRange<CGFloat> = 0 ... 10
-    public let step: CGFloat = 1
-    public let distance: ClosedRange<CGFloat> = 1 ... .infinity
+    private var _range: ClosedRange<CGFloat>
 
-    public let lowerThumbSize = CGSize(width: 27, height: 27)
-    public let upperThumbSize = CGSize(width: 27, height: 27)
-    public let lowerThumbInteractiveSize = CGSize(width: 44, height: 44)
-    public let upperThumbInteractiveSize = CGSize(width: 44, height: 44)
+    public let bounds: ClosedRange<CGFloat>
+    public let step: CGFloat
+    public let distance: ClosedRange<CGFloat>
+
+    public let lowerThumbSize: CGSize
+    public let upperThumbSize: CGSize
     
     public let trackConfiguration: TrackConfiguration
 
-    public static let `default`: RangeSliderConfiguration = .init()
+    public static let `default`: RangeSliderConfiguration = .init(range: 2 ... 8,
+                                                                  bounds: 0 ... 10,
+                                                                  step: 1,
+                                                                  distance: 0 ... .infinity,
+                                                                  lowerThumbSize: .init(width: 24, height: 24),
+                                                                  upperThumbSize: .init(width: 24, height: 24),
+                                                                  trackConfiguration: .init(lowerLeadingOffset: 12,
+                                                                                            lowerTrailingOffset: 36,
+                                                                                            upperLeadingOffset: 36,
+                                                                                            upperTrailingOffset: 12,
+                                                                                            trackHeight: 6,
+                                                                                            cornerRadius: 3,
+                                                                                            backgroundColor: .gray,
+                                                                                            foregroundColor: .red))
 }
 
 

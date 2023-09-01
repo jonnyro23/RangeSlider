@@ -5,7 +5,6 @@ import UIKit
 public class RangeSlider: UIControl {
     public var configuration: RangeSliderConfiguration {
         didSet {
-            print(configuration)
             updateTrackFrame()
             updateLowerThumbFrame()
             updateUpperThumbFrame()
