@@ -8,6 +8,7 @@ public class RangeSlider: UIControl {
             updateTrackFrame()
             updateLowerThumbFrame()
             updateUpperThumbFrame()
+            sendActions(for: .valueChanged)
         }
     }
     
