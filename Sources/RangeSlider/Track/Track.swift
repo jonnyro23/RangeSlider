@@ -99,8 +99,8 @@ class Track: UIView {
             value: trackBounds.lowerBound,
             availableDistance: frame.size.width,
             bounds: trackBounds,
-            leadingOffset: configuration.lowerLeadingOffset,
-            trailingOffset: configuration.lowerTrailingOffset
+            leadingOffset: 0,
+            trailingOffset: 0
         )
         let width = rangeDistance(
             overallLength: frame.size.width,
@@ -108,8 +108,8 @@ class Track: UIView {
             bounds: trackBounds,
             lowerStartOffset: configuration.lowerLeadingOffset,
             lowerEndOffset: configuration.lowerTrailingOffset,
-            upperStartOffset: configuration.upperLeadingOffset,
-            upperEndOffset: configuration.upperTrailingOffset
+            upperStartOffset: 0,
+            upperEndOffset: 0
         )
         trackView.frame = .init(x: leadingOffset,
                                 y: center.y - configuration.trackHeight / 2,
