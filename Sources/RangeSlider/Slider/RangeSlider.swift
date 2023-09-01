@@ -67,6 +67,10 @@ public class RangeSlider: UIControl {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        selectedThumb == nil ? true : false
+    }
 
     func setup() {
         addSubview(track)
