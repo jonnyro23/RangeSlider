@@ -105,7 +105,6 @@ public class RangeSlider: UIControl {
                                  height: configuration.lowerThumbSize.height)
         lowerThumb.center = .init(x: leadingOffset,
                                   y: frame.midY)
-        lowerThumb.layer.cornerRadius = configuration.lowerThumbSize.height / 2
     }
 
     func updateUpperThumbFrame() {
@@ -122,7 +121,6 @@ public class RangeSlider: UIControl {
                                  height: configuration.upperThumbSize.height)
         upperThumb.center = .init(x: leadingOffset,
                                   y: frame.midY)
-        upperThumb.layer.cornerRadius = configuration.upperThumbSize.height / 2
     }
 
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
