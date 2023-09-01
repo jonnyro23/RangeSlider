@@ -73,6 +73,8 @@ public class RangeSlider: UIControl {
     }
 
     func setup() {
+        clipsToBounds = false
+        layer.masksToBounds = false
         addSubview(track)
         addSubview(lowerThumb)
         addSubview(upperThumb)
