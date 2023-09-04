@@ -19,6 +19,10 @@ public class RangeSlider: UIControl {
             updateUpperThumbFrame()
         }
     }
+    
+    public var didBeginDragging: (() -> Void)?
+    public var didChangeDragPosition: (() -> Void)?
+    public var didEndDragging: (() -> Void)?
 
     private let track: Track
     private let lowerThumb: UIView
@@ -134,6 +138,7 @@ public class RangeSlider: UIControl {
                     trailingOffset: configuration.lowerThumbSize.width / 2
                 )
             }
+            didBeginDragging?()
             return true
         } else if upperThumb.frame.contains(location) {
             selectedThumb = upperThumb
@@ -146,6 +151,7 @@ public class RangeSlider: UIControl {
                     trailingOffset: configuration.upperThumbSize.width / 2
                 )
             }
+            didBeginDragging?()
             return true
         }
 
@@ -211,11 +217,12 @@ public class RangeSlider: UIControl {
                 forceAdjacent: options.contains(.forceAdjacentValue)
             )
         }
-
+        didChangeDragPosition?()
         return true
     }
 
     override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        didEndDragging?()
         selectedThumb = nil
         dragOffset = nil
     }
