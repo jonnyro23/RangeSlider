@@ -50,6 +50,7 @@ import Foundation
                              leadingOffset: CGFloat = 0,
                              trailingOffset: CGFloat = 0) -> CGFloat {
     guard availableDistance > leadingOffset + trailingOffset else { return 0 }
+    guard bounds.upperBound - bounds.lowerBound != 0 else { return 0 }
     let boundsLenght = bounds.upperBound - bounds.lowerBound
     let relativeValue = (value - bounds.lowerBound) / boundsLenght
     let offset = (leadingOffset - ((leadingOffset + trailingOffset) * relativeValue))
@@ -64,6 +65,8 @@ import Foundation
                           step: CGFloat = 0.001,
                           leadingOffset: CGFloat = 0,
                           trailingOffset: CGFloat = 0) -> CGFloat {
+    guard (availableDistance - (leadingOffset + trailingOffset)) != 0 else { return 0 }
+    guard step != 0 else { return 0 }
     let relativeValue = (distance - leadingOffset) / (availableDistance - (leadingOffset + trailingOffset))
     let newValue = bounds.lowerBound + (relativeValue * (bounds.upperBound - bounds.lowerBound))
     let steppedNewValue = (round(newValue / step) * step)
