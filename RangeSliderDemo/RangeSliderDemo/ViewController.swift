@@ -27,7 +27,16 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        rangeSlider.configuration = rangeSlider.configuration
+        rangeSlider.configuration = .init(range: 10 ... 17000,
+                                          bounds: 0 ... 20000,
+                                          step: 1,
+                                          distance: 10 ... .infinity,
+                                          lowerThumbSize: .init(width: 50, height: 50),
+                                          upperThumbSize: .init(width: 50, height: 50),
+                                          trackHeight: 8,
+                                          trackCornerRadius: 4,
+                                          trackBackgroundColor: .cyan,
+                                          trackForegroundColor: .red)
     }
     
     override func viewDidAppear(_ animated: Bool) {

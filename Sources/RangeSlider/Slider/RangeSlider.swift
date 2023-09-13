@@ -1,4 +1,5 @@
 import UIKit
+import Haptics
 
 // MARK: - RangeSlider
 
@@ -126,6 +127,7 @@ public class RangeSlider: UIControl {
     }
 
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        Haptics.prepare(.selection)
         let location: CGPoint = touch.location(in: self)
         if lowerThumb.frame.contains(location) {
             selectedThumb = lowerThumb
@@ -159,9 +161,10 @@ public class RangeSlider: UIControl {
     }
 
     override open func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        Haptics.prepare(.selection)
         guard selectedThumb != nil else { return false }
-
         let location: CGPoint = touch.location(in: self)
+        var changed = false
         if selectedThumb == lowerThumb {
             if dragOffset == nil {
                 dragOffset = location.x - distanceFrom(
@@ -181,7 +184,9 @@ public class RangeSlider: UIControl {
                 leadingOffset: configuration.lowerThumbSize.width / 2,
                 trailingOffset: configuration.lowerThumbSize.width / 2
             )
-
+            if computedLowerBound != configuration.range.lowerBound {
+                changed = true
+            }
             configuration.range = rangeFrom(
                 updatedLowerBound: computedLowerBound,
                 upperBound: configuration.range.upperBound,
@@ -189,6 +194,7 @@ public class RangeSlider: UIControl {
                 distance: configuration.distance,
                 forceAdjacent: options.contains(.forceAdjacentValue)
             )
+            
         } else if selectedThumb == upperThumb {
             if dragOffset == nil {
                 dragOffset = location.x - distanceFrom(
@@ -208,7 +214,9 @@ public class RangeSlider: UIControl {
                 leadingOffset: configuration.lowerThumbSize.width + configuration.upperThumbSize.width / 2,
                 trailingOffset: configuration.upperThumbSize.width / 2
             )
-
+            if computedUpperBound != configuration.range.upperBound {
+                changed = true
+            }
             configuration.range = rangeFrom(
                 lowerBound: configuration.range.lowerBound,
                 updatedUpperBound: computedUpperBound,
@@ -217,6 +225,10 @@ public class RangeSlider: UIControl {
                 forceAdjacent: options.contains(.forceAdjacentValue)
             )
         }
+        if changed {
+            Haptics.generate(.selection)
+        }
+        Haptics.prepare(.selection)
         didChangeDragPosition?(configuration.range)
         return true
     }
